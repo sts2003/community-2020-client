@@ -8,6 +8,7 @@ import {
   SearchInput,
   C_Btn,
 } from "../commonComponents";
+import { Link } from "react-router-dom";
 
 class DocsBoard extends React.Component {
   render() {
@@ -22,7 +23,9 @@ class DocsBoard extends React.Component {
         </TitleWrapper>
 
         <TitleWrapper width={"960px"} align={"flex-end"}>
-          <C_Btn> 글쓰기 </C_Btn>
+          <Link to={`/write/docs`}>
+            <C_Btn> 글쓰기 </C_Btn>
+          </Link>
         </TitleWrapper>
         <Wrapper width="960px" height="25px" direction="row">
           <Column width={"5%"} isHead={true}>

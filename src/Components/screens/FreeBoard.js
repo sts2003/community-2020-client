@@ -8,6 +8,8 @@ import {
   SearchInput,
   C_Btn,
 } from "../commonComponents";
+import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
 
 class FreeBoard extends React.Component {
   render() {
@@ -17,12 +19,15 @@ class FreeBoard extends React.Component {
           <Title>Free Board</Title>
         </TitleWrapper>
 
-        <TitleWrapper>
+        <TitleWrapper direction={`row`}>
           <SearchInput />
+          <SearchIcon />
         </TitleWrapper>
 
         <TitleWrapper width={"960px"} align={"flex-end"}>
-          <C_Btn> 글쓰기 </C_Btn>
+          <Link to={`/write/free`}>
+            <C_Btn> 글쓰기 </C_Btn>
+          </Link>
         </TitleWrapper>
         <Wrapper width="960px" height="25px" direction="row">
           <Column width={"5%"} isHead={true}>

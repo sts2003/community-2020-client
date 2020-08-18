@@ -57,7 +57,7 @@ export const TitleWrapper = styled.div`
   margin: 50px 0px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => props.direction || `column`};
   align-items: ${(props) => props.align || `center`};
   justify-content: center;
 `;
