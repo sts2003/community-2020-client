@@ -47,7 +47,13 @@ class FreeBoard extends React.Component {
           </Column>
         </Wrapper>
         {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
+        <Wrapper
+          width="960px"
+          height="25px"
+          direction="row"
+          isData={true}
+          onClick={() => this.props.history.push("/detail/anyID")}
+        >
           <Column width={"5%"} isHead={false}>
             1
           </Column>

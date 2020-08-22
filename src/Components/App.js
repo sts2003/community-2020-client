@@ -6,6 +6,7 @@ import DocsBoard from "./screens/DocsBoard";
 import GalleryBoard from "./screens/GalleryBoard";
 import Header from "./screens/Header";
 import Write from "./screens/Write";
+import Detail from "./screens/Detail";
 
 class App extends React.Component {
   render() {
@@ -17,6 +18,7 @@ class App extends React.Component {
         <Route exact path="/docsBoard" component={DocsBoard} />
         <Route exact path="/galleryBoard" component={GalleryBoard} />
         <Route exact path="/write/:boardType" component={Write} />
+        <Route exact path="/detail/:id" component={Detail} />
       </div>
     );
   }
