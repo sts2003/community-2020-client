@@ -10,9 +10,28 @@ import {
 } from "../commonComponents";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class FreeBoard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      datum: null,
+    };
+  }
+  componentDidMount = async () => {
+    try {
+      await axios.post("/api/getFreeBoardData").then((response) =>
+        this.setState({
+          datum: response.data,
+        })
+      );
+    } catch (e) {}
+  };
+
   render() {
+    const { datum } = this.state;
     return (
       <WholeWrapper>
         <TitleWrapper>
@@ -47,70 +66,38 @@ class FreeBoard extends React.Component {
           </Column>
         </Wrapper>
         {/* --- DATA AREA START ---*/}
-        <Wrapper
-          width="960px"
-          height="25px"
-          direction="row"
-          isData={true}
-          onClick={() => this.props.history.push("/detail/anyID")}
-        >
-          <Column width={"5%"} isHead={false}>
-            1
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            ㅎㅇ
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            0
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
-
-        {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
-          <Column width={"5%"} isHead={false}>
-            2
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            ㅂㅇ
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            0
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
-
-        {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
-          <Column width={"5%"} isHead={false}>
-            3
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            ㅎㅇㅎㅇ
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            0
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
+        {datum ? (
+          datum.map((data, idx) => {
+            return (
+              <Wrapper
+                key={data.refKey}
+                width="960px"
+                height="25px"
+                direction="row"
+                isData={true}
+                onClick={() => this.props.history.push("/detail/anyID")}
+              >
+                <Column width={"5%"} isHead={false}>
+                  {idx + 1}
+                </Column>
+                <Column width={"40%"} isHead={false}>
+                  {data.title}
+                </Column>
+                <Column width={"15%"} isHead={false}>
+                  {data.author}
+                </Column>
+                <Column width={"20%"} isHead={false}>
+                  {data.regDate}
+                </Column>
+                <Column width={"20%"} isHead={false}>
+                  {data.hit}
+                </Column>
+              </Wrapper>
+            );
+          })
+        ) : (
+          <div>Loading...</div>
+        )}
       </WholeWrapper>
     );
   }

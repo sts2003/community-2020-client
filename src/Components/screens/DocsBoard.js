@@ -9,9 +9,27 @@ import {
   C_Btn,
 } from "../commonComponents";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class DocsBoard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      datum: null,
+    };
+  }
+  componentDidMount = async () => {
+    try {
+      await axios.post("/api/getDocsBoardData").then((response) =>
+        this.setState({
+          datum: response.data,
+        })
+      );
+    } catch (e) {}
+  };
   render() {
+    const { datum } = this.state;
     return (
       <WholeWrapper>
         <TitleWrapper>
@@ -45,64 +63,38 @@ class DocsBoard extends React.Component {
           </Column>
         </Wrapper>
         {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
-          <Column width={"5%"} isHead={false}>
-            1
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            나는 낙타
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            999+
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
-
-        {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
-          <Column width={"5%"} isHead={false}>
-            2
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            맞아 나 치커리 먹어
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            999+
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
-
-        {/* --- DATA AREA START ---*/}
-        <Wrapper width="960px" height="25px" direction="row" isData={true}>
-          <Column width={"5%"} isHead={false}>
-            3
-          </Column>
-          <Column width={"40%"} isHead={false}>
-            같이 먹을 분
-          </Column>
-          <Column width={"15%"} isHead={false}>
-            오민형
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            2020/08/10
-          </Column>
-          <Column width={"20%"} isHead={false}>
-            999+
-          </Column>
-        </Wrapper>
-        {/* --- DATA AREA END ---*/}
+        {datum ? (
+          datum.map((data, idx) => {
+            return (
+              <Wrapper
+                key={data.refKey}
+                width="960px"
+                height="25px"
+                direction="row"
+                isData={true}
+                onClick={() => this.props.history.push("/detail/anyID")}
+              >
+                <Column width={"5%"} isHead={false}>
+                  {idx + 1}
+                </Column>
+                <Column width={"40%"} isHead={false}>
+                  {data.title}
+                </Column>
+                <Column width={"15%"} isHead={false}>
+                  {data.author}
+                </Column>
+                <Column width={"20%"} isHead={false}>
+                  {data.regDate}
+                </Column>
+                <Column width={"20%"} isHead={false}>
+                  {data.hit}
+                </Column>
+              </Wrapper>
+            );
+          })
+        ) : (
+          <div>Loading...</div>
+        )}
       </WholeWrapper>
     );
   }
