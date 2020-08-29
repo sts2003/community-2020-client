@@ -49,21 +49,83 @@ const TextArea = styled.textarea`
 `;
 
 class Write extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: "",
+      author: "",
+      description: "",
+    };
+  }
+
   render() {
+    const { title, description, author } = this.state;
     return (
       <Wrapper>
         <Title>게시글 작성하기({this.props.match.params.boardType})</Title>
-        <TextInput type="text" placeholder="Title..." />
-        <TextInput type="text" placeholder="Author..." />
-        <TextArea placeholder="Description..." />
+        <TextInput
+          type="text"
+          placeholder="Title..."
+          name="title"
+          value={title}
+          onChange={this._valueChangeHandler}
+        />
+        <TextInput
+          type="text"
+          placeholder="Author..."
+          name="author"
+          value={author}
+          onChange={this._valueChangeHandler}
+        />
+        <TextArea
+          placeholder="Description..."
+          name="description"
+          value={description}
+          onChange={this._valueChangeHandler}
+        />
 
         <Wrapper direction={`row`}>
-          <C_Btn>작성하기</C_Btn>
+          <C_Btn onClick={this._writeHandler}>작성하기</C_Btn>
           <D_Btn onClick={() => this.props.history.goBack()}>작성취소</D_Btn>
         </Wrapper>
       </Wrapper>
     );
   }
+
+  _valueChangeHandler = (e) => {
+    let nextState = {};
+
+    nextState[e.target.name] = e.target.value;
+
+    this.setState(nextState);
+  };
+
+  _writeHandler = () => {
+    const { title, description, author } = this.state;
+
+    if (!title || title.trim() === "") {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (!author || author.trim() === "") {
+      alert("작성자를 입력해주세요.");
+      return;
+    }
+    if (!description || description.trim() === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    const inputData = {
+      title: title,
+      author: author,
+      description: description,
+      type: this.props.match.params.boardType,
+    };
+
+    console.log(inputData);
+  };
 }
 
 export default Write;
