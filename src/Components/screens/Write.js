@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { C_Btn } from "../commonComponents";
 import { D_Btn } from "../commonComponents";
+import axios from "axios";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -101,7 +102,7 @@ class Write extends React.Component {
     this.setState(nextState);
   };
 
-  _writeHandler = () => {
+  _writeHandler = async () => {
     const { title, description, author } = this.state;
 
     if (!title || title.trim() === "") {
@@ -124,7 +125,18 @@ class Write extends React.Component {
       type: this.props.match.params.boardType,
     };
 
-    console.log(inputData);
+    await axios
+      .post("/api/writeBoard", {
+        params: { inputData },
+      })
+      .then((response) => {
+        if (response.data === 0) {
+          alert("등록실패 !");
+        } else {
+          alert("게시글 등록완료 !");
+          this.props.history.push(`/${this.props.match.params.boardType}board`);
+        }
+      });
   };
 }
 
