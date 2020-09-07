@@ -72,7 +72,9 @@ class DocsBoard extends React.Component {
                 height="25px"
                 direction="row"
                 isData={true}
-                onClick={() => this.props.history.push("/detail/anyID")}
+                onClick={() =>
+                  this.props.history.push(`/detail/${data.refKey}`)
+                }
               >
                 <Column width={"5%"} isHead={false}>
                   {idx + 1}

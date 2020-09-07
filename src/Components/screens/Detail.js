@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { D_Btn } from "../commonComponents";
+import axios from "axios";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -48,13 +49,41 @@ const TextArea = styled.textarea`
 `;
 
 class Detail extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      title: "",
+      author: "",
+      desc: "",
+    };
+  }
+  componentDidMount = async () => {
+    const inputData = {
+      id: this.props.match.params.id,
+    };
+
+    await axios
+      .post("/api/getDetail", {
+        params: { inputData },
+      })
+      .then((response) =>
+        this.setState({
+          title: response.data.title,
+          author: response.data.author,
+          desc: response.data.description,
+        })
+      );
+  };
+
   render() {
+    const { title, author, desc } = this.state;
     return (
       <Wrapper>
         <Title>게시글 상세 보기</Title>
-        <TextInput type="text" readOnly={true} />
-        <TextInput type="text" readOnly={true} />
-        <TextArea readOnly={true} />
+        <TextInput type="text" readOnly={true} value={title} />
+        <TextInput type="text" readOnly={true} value={author} />
+        <TextArea readOnly={true} value={desc} />
 
         <Wrapper direction={`row`}>
           <D_Btn onClick={() => this.props.history.goBack()}>목록으로</D_Btn>
